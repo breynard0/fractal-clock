@@ -1,6 +1,6 @@
-use std::f32::consts::PI;
+use std::{f32::consts::PI, time::Duration};
 
-use chrono::{DateTime, Local, Timelike};
+// use chrono::{DateTime, Local, Timelike};
 use macroquad::prelude::*;
 
 fn conf() -> Conf {
@@ -29,9 +29,6 @@ async fn main() {
     let mut fullscreen = false;
 
     loop {
-        
-        let time = chrono::Local::now();
-        
         clear_background(BLACK);
         let min_dim = screen_width().min(screen_height());
         
@@ -46,7 +43,7 @@ async fn main() {
             screen_width() / 2.0,
             screen_height() / 2.0,
             min_dim / ITERATIONS as f32,
-            time,
+            web_time::SystemTime::now().duration_since(web_time::SystemTime::UNIX_EPOCH).unwrap(),
             ITERATIONS,
             ITERATIONS,
             0.0,
@@ -65,15 +62,15 @@ fn draw_clock(
     x: f32,
     y: f32,
     r: f32,
-    time: DateTime<Local>,
+    time: Duration,
     n: i32,
     m: i32,
     offset: f32,
     lines: &mut Vec<Line>
 ) {
-    let millis = time.timestamp_subsec_millis() as f32;
-    let seconds = time.second() as f32;
-    let minute = time.minute() as f32;
+    let millis = (time.as_millis() % 1000) as f32;
+    let seconds = (time.as_secs() % 60) as f32;
+    let minute = ((time.as_secs() / 60) % 60) as f32;
 
     let brightness = (1.0 + n as f32) / (1.0 + m as f32);
     let thickness = brightness * 3.0;

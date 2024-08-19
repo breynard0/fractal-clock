@@ -4,9 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-basic-http-server = "0.8.1"
-chrono = "0.4.38"
+# chrono = "0.4.38"
 macroquad = "0.4.12"
-softbuffer = "0.4.5"
-tiny-skia = "0.11.4"
-winit = "0.30.5"
+web-time = "1.1.0"
